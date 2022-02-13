@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
+
 import static org.launchcode.techjobs.mvc.controllers.ListController.columnChoices;
+import static org.launchcode.techjobs.mvc.models.JobData.getFieldValue;
 
 
 /**
@@ -32,13 +34,14 @@ public class SearchController {
     public String displaySearchResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm ) {
         ArrayList<Job> jobs;
 
-        if (searchType.equals("all") || searchType.equals("")){
+        if (searchType.equals("all") || searchTerm.equals("")){
             jobs = JobData.findAll();
-            model.addAttribute("title", "All Jobs");
+
         } else {
             jobs = JobData.findByColumnAndValue(searchType, searchTerm);
-            model.addAttribute("title", "Jobs with " + columnChoices.get(searchType) + ": " + searchTerm);
         }
+
+
         model.addAttribute("jobs", jobs);
         model.addAttribute("columns", columnChoices);
 
